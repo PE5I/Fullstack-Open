@@ -3,12 +3,15 @@ import phoneBookService from './services/phonebook'
 import Contact from './components/Contact'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [activityMessage, setActivityMessage] = useState(null)
+  const [activityType, setActivityType] = useState('')
 
   useEffect(() => {
     phoneBookService
@@ -18,30 +21,46 @@ const App = () => {
       })
   }, [])
 
+  const updateContact = (newName) => {
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      id: persons.find(person => person.name === newName).id
+    }
+
+    phoneBookService
+      .update(personObject.id, personObject)
+      .then(returnedPerson => {
+        setPersons(persons
+          .filter(person => person.id !== personObject.id)
+          .concat(returnedPerson)
+        )
+        setNewName('')
+        setNewNumber('')
+        
+        setActivityMessage(`Updated number for ${newName}`)
+        setActivityType('message')
+        setTimeout(() => {
+          setActivityMessage(null)
+        }, 5000)
+      })
+      .catch(() => {
+        setActivityMessage(`Information of ${newName} has already been removed from server`)
+        setActivityType('error')
+        setTimeout(() => setActivityMessage(null), 5000)
+      })
+
+  }
+
   const addContact = (event) => {
     event.preventDefault()
-    console.log(persons);
+    let replace = false;
     // check for duplicate
     if (persons.map(name => name.name.toUpperCase())
-              .includes(newName.toUpperCase())) 
+      .includes(newName.toUpperCase()))
     {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const personObject = {
-          name: newName,
-          number: newNumber,
-          id: persons.find(person => person.name === newName).id
-        }
-  
-        phoneBookService
-          .update(personObject.id, personObject)
-          .then(returnedPerson => {
-            setPersons(persons
-              .filter(person => person.id !== personObject.id)
-              .concat(returnedPerson)
-            )
-            setNewName('')
-            setNewNumber('')
-          })
+        updateContact(newName)
       }
       return
     }
@@ -60,11 +79,15 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+      
+      setActivityMessage(`Added ${newName}`)
+      setTimeout(() => {
+        setActivityMessage(null)
+      }, 5000)
     }
   }
 
   const handleContactChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -79,20 +102,29 @@ const App = () => {
   const handleDelete = id => (event) => {
     event.preventDefault()
     console.log(event);
+    const name = persons.find(person => person.id === id).name
 
-    if (window.confirm(`Delete ${persons.find(person => person.id === id).name} ?`)) {
+    if (window.confirm(`Delete ${name} ?`)) {
       console.log("yes");
       phoneBookService
         .deleteId(id)
         .then(returned => {
           setPersons(persons.filter(person => person.id !== id))
         })
+      
+      setActivityMessage(`Deleted entry for ${name}`)
+      setActivityType('message')
+      setTimeout(() => {
+        setActivityMessage(null)
+      }, 5000)
     }
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification type={activityType} message={activityMessage} />
+
       <Filter text={"filter shown with"} value={searchTerm} onChange={handleFilterFormChange} />
 
       <PersonForm textName={"name:"} textNumber={"number:"} 
