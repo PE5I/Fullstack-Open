@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import phoneBookService from './services/phonebook'
 import Contact from './components/Contact'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -11,10 +11,10 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    phoneBookService
+      .getAll()
+      .then(initialPhoneBook => {
+        setPersons(initialPhoneBook)
       })
   }, [])
 
@@ -25,7 +25,24 @@ const App = () => {
     if (persons.map(name => name.name.toUpperCase())
               .includes(newName.toUpperCase())) 
     {
-      window.alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personObject = {
+          name: newName,
+          number: newNumber,
+          id: persons.find(person => person.name === newName).id
+        }
+  
+        phoneBookService
+          .update(personObject.id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons
+              .filter(person => person.id !== personObject.id)
+              .concat(returnedPerson)
+            )
+            setNewName('')
+            setNewNumber('')
+          })
+      }
       return
     }
 
@@ -33,11 +50,16 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: persons.length+1
+        id: persons.at(persons.length)+1
       }
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+
+      phoneBookService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
 
@@ -54,6 +76,20 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
+  const handleDelete = id => (event) => {
+    event.preventDefault()
+    console.log(event);
+
+    if (window.confirm(`Delete ${persons.find(person => person.id === id).name} ?`)) {
+      console.log("yes");
+      phoneBookService
+        .deleteId(id)
+        .then(returned => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -64,7 +100,7 @@ const App = () => {
                   onSubmit={addContact} onChangeName={handleContactChange} onChangeNumber={handleNumberChange} />
       
       <h2>Numbers</h2>
-      <Contact persons={persons} searchTerm={searchTerm} />
+      <Contact onClick={handleDelete} persons={persons} searchTerm={searchTerm} />
     </div>
   )
 }
