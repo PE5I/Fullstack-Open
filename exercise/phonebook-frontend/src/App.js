@@ -81,8 +81,10 @@ const App = () => {
         })
       
       setActivityMessage(`Added ${newName}`)
+      setActivityType('message')
       setTimeout(() => {
         setActivityMessage(null)
+        setActivityType(null)
       }, 5000)
     }
   }
