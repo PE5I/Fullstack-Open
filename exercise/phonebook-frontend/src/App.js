@@ -21,7 +21,8 @@ const App = () => {
       })
   }, [])
 
-  const updateContact = (newName) => {
+  const updateContact = () => {
+
     const personObject = {
       name: newName,
       number: newNumber,
@@ -29,12 +30,11 @@ const App = () => {
     }
 
     phoneBookService
-      .update(personObject.id, personObject)
+      .update(personObject)
       .then(returnedPerson => {
         setPersons(persons
-          .filter(person => person.id !== personObject.id)
-          .concat(returnedPerson)
-        )
+          .filter(person => person.name !== returnedPerson.name)
+          .concat(returnedPerson))
         setNewName('')
         setNewNumber('')
         
@@ -54,15 +54,14 @@ const App = () => {
 
   const addContact = (event) => {
     event.preventDefault()
-    let replace = false;
+
     // check for duplicate
     if (persons.map(name => name.name.toUpperCase())
       .includes(newName.toUpperCase()))
     {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        updateContact(newName)
+        return updateContact(newName)
       }
-      return
     }
 
     if (newName.length !== 0) {

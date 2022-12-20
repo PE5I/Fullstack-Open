@@ -1,4 +1,4 @@
-DELETE http://localhost:3001/api/persons/4
+DELETE http://localhost:3001/api/persons/63a18dacad5edb6edbaba7e3
 Content-Type: application/json
 
 ###
@@ -6,6 +6,15 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Taototo",
+  "name": "Another",
   "number": "230348"
+}
+
+###
+PUT http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Another",
+  "number": "454545"
 }

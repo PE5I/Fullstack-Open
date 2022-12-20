@@ -18,7 +18,7 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (requssest, response) => {
   const id = Number(request.params.id)
 
   const person = persons.find(person => person.id === id)
@@ -33,6 +33,21 @@ const generateId = () => {
   return Math.floor(Math.random() * 10000)
 }
 
+app.put('/api/persons', (request, response) => {
+  const query = { name: request.body.name }
+
+  const replacedPerson = {
+    number: request.body.number,
+  }  
+
+  Person.findOneAndUpdate(query, replacedPerson, { new: true })
+    .then((updatedPerson) => {
+      console.log("updated...->", updatedPerson, "replacedPerson...=>", replacedPerson);
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
+})
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
   // console.log(body);
@@ -45,7 +60,7 @@ app.post('/api/persons', (request, response) => {
   Person.findOne({ name: body.name }, (error, person) => {
     if (person) {
       console.log('sorry there duplicate');
-      return response.status(400).json({
+      response.status(400).json({
         error: 'name already exists in the database'
       })
     } else {
@@ -62,10 +77,11 @@ app.post('/api/persons', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-
-  persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
@@ -82,6 +98,14 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message);
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 
