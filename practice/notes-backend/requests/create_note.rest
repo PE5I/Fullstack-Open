@@ -2,11 +2,11 @@ GET http://localhost:3001/api/notes
 
 ###
 
-PUT http://localhost:3001/api/notes/63a148ab9989713968d269d2
+PUT http://localhost:3001/api/notes/63a25d45d442a21ad7449d64
 Content-Type: application/json
 
 {
-  "content": "VS Code client is actually bad for you",
+  "content": "lol"
   "important": false
 }
 
@@ -20,6 +20,6 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-  "content": "VS Code client is pretty good",
+  "content": "lolll",
   "important": false
 }
