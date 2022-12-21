@@ -44,8 +44,8 @@ const App = () => {
           setActivityMessage(null)
         }, 5000)
       })
-      .catch(() => {
-        setActivityMessage(`Information of ${newName} has already been removed from server`)
+      .catch(error => {
+        setActivityMessage(error.message)
         setActivityType('error')
         setTimeout(() => setActivityMessage(null), 5000)
       })
@@ -77,14 +77,20 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+
+          setActivityMessage(`Added ${newName}`)
+          setActivityType('message')
+          setTimeout(() => {
+            setActivityMessage(null)
+            setActivityType(null)
+          }, 5000)
         })
-      
-      setActivityMessage(`Added ${newName}`)
-      setActivityType('message')
-      setTimeout(() => {
-        setActivityMessage(null)
-        setActivityType(null)
-      }, 5000)
+        .catch(error => {
+          console.log(error.response.data.error);
+          setActivityMessage(error.response.data.error)
+          setActivityType('error')
+          setTimeout(() => setActivityMessage(null), 5000)
+        })      
     }
   }
 

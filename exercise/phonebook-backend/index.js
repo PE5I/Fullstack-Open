@@ -18,7 +18,7 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (requssest, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
 
   const person = persons.find(person => person.id === id)
@@ -33,47 +33,48 @@ const generateId = () => {
   return Math.floor(Math.random() * 10000)
 }
 
-app.put('/api/persons', (request, response) => {
-  const query = { name: request.body.name }
-
-  const replacedPerson = {
-    number: request.body.number,
-  }  
-
-  Person.findOneAndUpdate(query, replacedPerson, { new: true })
-    .then((updatedPerson) => {
-      console.log("updated...->", updatedPerson, "replacedPerson...=>", replacedPerson);
+app.put('/api/persons/:id', (request, response, next) => {
+  // const query = { name: request.body.name }
+  const { name, number } = request.body
+  console.log(request.params);
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number }, 
+    { new: true, runValidators: true, context: 'query'}
+  )
+    .then(updatedPerson => {
+      if (!updatedPerson) {
+        return response.json({error: 'id does not exist'})
+      }
+      
       response.json(updatedPerson)
     })
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  // console.log(body);
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: 'name or number is missing'
+
+  Person.findOne({ name: body.name }, (error, returnedPerson) => {
+      if (returnedPerson) {
+        console.log('sorry there duplicate');
+        return response.status(400).json({
+          error: 'name already exists in the database'
+        })
+      } else {
+        const person = new Person({
+          name: body.name,
+          number: body.number,
+        })
+
+        person.save()
+          .then(savedNote => {
+            console.log(savedNote);
+            response.json(savedNote)
+          })
+          .catch(error => next(error))
+      }
     })
-  }
-
-  Person.findOne({ name: body.name }, (error, person) => {
-    if (person) {
-      console.log('sorry there duplicate');
-      response.status(400).json({
-        error: 'name already exists in the database'
-      })
-    } else {
-      const person = new Person({
-        name: body.name,
-        number: body.number,
-      })
-
-      person.save().then(savedNote => {
-        response.json(savedNote)
-      })
-    }
-  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -101,6 +102,8 @@ app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
+
+  response.status(400).json({error: error.message})
 
   next(error)
 }
