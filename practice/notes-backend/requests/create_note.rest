@@ -6,7 +6,7 @@ PUT http://localhost:3001/api/notes/63a25d45d442a21ad7449d64
 Content-Type: application/json
 
 {
-  "content": "lol"
+  "content": "lol",
   "important": false
 }
 
