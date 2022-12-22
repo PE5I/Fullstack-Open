@@ -39,14 +39,14 @@ app.put('/api/persons/:id', (request, response, next) => {
   console.log(request.params)
   Person.findByIdAndUpdate(
     request.params.id,
-    { name, number }, 
-    { new: true, runValidators: true, context: 'query'}
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedPerson => {
       if (!updatedPerson) {
-        return response.json({error: 'id does not exist'})
+        return response.json({ error: 'id does not exist' })
       }
-      
+
       response.json(updatedPerson)
     })
     .catch(error => next(error))
@@ -89,7 +89,7 @@ app.get('/info', (request, response) => {
   const numEntries = Person.length
   let content = `<p>Phonebook has info for ${numEntries} people</p>`
   content += `<p>${new Date()}</p>`
-  
+
   // response.set('Content-Type', 'text/html')
   response.send(content)
 })
@@ -103,7 +103,7 @@ app.use(unknownEndpoint)
 const errorHandler = (error, request, response, next) => {
   console.log(error.message)
 
-  response.status(400).json({error: error.message})
+  response.status(400).json({ error: error.message })
 
   next(error)
 }
