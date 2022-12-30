@@ -21,5 +21,6 @@ Content-Type: application/json
 
 {
   "content": "lolll",
-  "important": false
+  "important": false,
+  "userId": "63ae3a6161c27a394cb9a58a"
 }
