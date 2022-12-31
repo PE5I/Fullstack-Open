@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -21,11 +22,35 @@ const initialBlogs = [
   },
 ]
 
+const initialUsers = [
+  {
+    username: 'root',
+    passwordHash: 'notahash'
+  },
+  {
+    name: 'John Smith',
+    username: 'jsmith',
+    passwordHash: 'somehash'
+  },
+  {
+    name: 'Jane Doe',
+    username: 'jdoe',
+    passwordHash: 'nohash'
+  }
+]
+
 const totalLikes = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.likes).reduce((sum, likes) => sum + likes)
 }
 
+const usersInDb = async () => {
+  return await User.find({})
+}
+
 module.exports = {
-  initialBlogs, totalLikes
+  initialBlogs,
+  initialUsers,
+  totalLikes,
+  usersInDb
 }
