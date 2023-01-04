@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import noteService from './services/notes'
 import loginService from './services/login'
 import Note from './components/Note'
@@ -10,13 +10,12 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
+  // const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     noteService
@@ -35,24 +34,20 @@ const App = () => {
     }
   }, [])
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
-  }
-
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important)
-  
+
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id)
-    const changedNote = {...note, important: !note.important}
+    const changedNote = { ...note, important: !note.important }
 
     noteService
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(n => n.id !== id ? n : returnedNote))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `Note '${note.contant}' does not exist`
         )
@@ -61,29 +56,24 @@ const App = () => {
         }, 5000)
         setNotes(notes.filter(n => n.id !== id))
       })
-    
   }
 
-  const addNote = (event) => {
-    event.preventDefault()
-    console.log('button clicked', event.target)
-
-    if (newNote.length !== 0) {
-      const noteObject = {
-        content: newNote,
-        date: new Date().toISOString(),
-        important: Math.random() < 0.5,
-        id: notes.length + 1
-      }
-      // setNotes(notes.concat(noteObject))
-      noteService
-        .create(noteObject)
-        .then(returnedNote => {
-          setNotes(notes.concat(returnedNote))
-          setNewNote('')
-        })
-    }
+  const addNote = (noteObject) => {
+    noteFormRef.current.toggleVisibility()
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+      })
   }
+
+  const noteFormRef = useRef()
+
+  const noteForm = () => (
+    <Togglable buttonLabel='new note' ref={noteFormRef}>
+      <NoteForm createNote={addNote} />
+    </Togglable>
+  )
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -114,25 +104,19 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {user === null ? 
+      {user === null ?
         <Togglable buttonLabel="login">
           <LoginForm
-          handleSubmit={handleLogin}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          username={username}
-          password={password}
+            handleSubmit={handleLogin}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            username={username}
+            password={password}
           />
         </Togglable> :
         <div>
           <p>{user.name} logged-in</p>
-          <Togglable buttonLabel="new note">
-            <NoteForm
-              onSubmit={addNote}
-              value={newNote}
-              handleChange={handleNoteChange}
-            />
-          </Togglable>
+          {noteForm()}
         </div>
       }
 
@@ -142,7 +126,7 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => 
+        {notesToShow.map(note =>
           <Note
             label={note.important}
             key={note.id}
@@ -157,4 +141,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App
