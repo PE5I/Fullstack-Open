@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Flash from './components/Flash'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,13 +13,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -79,23 +79,57 @@ const App = () => {
     </form>
   )
 
+  const updateBlog = async (id, blogObject) => {
+
+    try {
+      const changedBlog = await blogService.update(id, blogObject)
+      setBlogs(blogs
+        .map(blog => blog.id === changedBlog.id ? changedBlog : blog))
+      console.log(blogs);
+    } catch (exception) {
+      setFlashMessage(exception.message)
+      setFlashType('error')
+      setTimeout(() => {
+        setFlashMessage('')
+        setFlashType('')
+      }, 5000)
+    }
+  }
+
+  const removeBlog = async (id) => {
+
+    try {
+      const changedBlog = await blogService.deleteBlog(id)
+      setBlogs(blogs
+        .filter(blog => blog.id !== id))
+      // console.log(blogs);
+    } catch (exception) {
+      setFlashMessage(exception.message)
+      setFlashType('error')
+      setTimeout(() => {
+        setFlashMessage('')
+        setFlashType('')
+      }, 5000)
+    }
+  }
+
   const blogApplication = () => (
     <div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {console.log(blogs)}
+      {blogs
+        .sort((blogA, blogB) => blogB.likes - blogA.likes)
+        .map(blog =>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
       )}
     </div>
   )
 
-  const handleCreateNew = async event => {
-    event.preventDefault()
-
+  const addNewBlog = async (blogObject) => {
     try {
-      const blog = await blogService.create({ title, author, url })
+      const blog = await blogService.create(blogObject)
+      // blogFormRef.current.toggleVisibility()
+
       setBlogs(blogs.concat(blog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       setFlashMessage(`a new blog ${blog.title} by ${blog.author} added`)
       setFlashType('message')
       setTimeout(() => {
@@ -112,56 +146,44 @@ const App = () => {
       }, 5000)
     }
   }
-  
+
+  const blogFormRef = useRef()
 
   const createNewForm = () => (
-    <form onSubmit={handleCreateNew}>
-      <div>
-        title:
-        <input
-        type="text"
-        value={title}
-        onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author:
-        <input
-        type="text"
-        value={author}
-        onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url:
-        <input
-        type="text"
-        value={url}
-        onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type='submit'>create</button>
-    </form>
+    <Togglable buttonLabel='create' refs={blogFormRef}>
+      <BlogForm 
+        createBlog={addNewBlog}
+      />
+    </Togglable>
   )
 
-  
+  const handleLogout = (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+    blogService.setToken(null)
+  }
 
   return (
     <div>
-    <h1>blogs</h1>
-    <Flash message={flashMessage} type={flashType} />
+      <h1>blogs</h1>
+      <Flash message={flashMessage} type={flashType} />
+      
 
-    {user === null 
-      ? <div>
-        <h1>log in to application</h1>
-        {loginForm()}
-        </div>
-      : <div>
-        {createNewForm()}
-        {blogApplication()}
-        </div>
-    }
-
+      {user === null 
+        ? <div>
+          <h1>log in to application</h1>
+          {loginForm()}
+          </div>
+        : <div>
+          <div className='login-user'>
+            {user.name ? user.name : user.username} logged in
+            <button onClick={handleLogout}>logout</button>
+          </div>
+          {createNewForm()}
+          {blogApplication()}
+          </div>
+      }
     </div>
   )
 }
