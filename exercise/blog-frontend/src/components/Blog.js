@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({blog, updateBlog, removeBlog}) => {
+const Blog = ({ blog, updateBlog, removeBlog }) => {
   const [view, setView] = useState(false)
 
   const toggleView = () => { setView(!view) }
@@ -24,24 +24,24 @@ const Blog = ({blog, updateBlog, removeBlog}) => {
   }
 
   return (
-  <div className={'blog-post'}>
-    {blog.title} - {blog.author} <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
-    {view ? 
-    <div> 
-      <div>{blog.url}</div>
-      <div>
+    <div className={'blog-post'}>
+      {blog.title} - {blog.author} <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
+      {view ?
+        <div>
+          <div>{blog.url}</div>
+          <div>
         likes {blog.likes}
-        <button onClick={handleLikeClick} >like</button>
-      </div>
-      <div>{blog.user.name ? blog.user.name : blog.user.username}</div>
-      <div>
-        <button onClick={handleRemoveClick}>remove</button>
-      </div>
-    </div> : ''}
-    {/* <div style={hideWhenVisible}>
+            <button onClick={handleLikeClick} >like</button>
+          </div>
+          <div>{blog.user.name ? blog.user.name : blog.user.username}</div>
+          <div>
+            <button onClick={handleRemoveClick}>remove</button>
+          </div>
+        </div> : ''}
+      {/* <div style={hideWhenVisible}>
       <button onClick={toggleView}>view</button>
     </div> */}
-  </div>
+    </div>
   )
 }
 

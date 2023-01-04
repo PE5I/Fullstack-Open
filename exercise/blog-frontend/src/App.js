@@ -13,12 +13,12 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -62,18 +62,18 @@ const App = () => {
       <div>
         username
         <input
-        type='text'
-        value={username}
-        name='username'
-        onChange={({ target }) => setUsername(target.value)}/>
+          type='text'
+          value={username}
+          name='username'
+          onChange={({ target }) => setUsername(target.value)}/>
       </div>
       <div>
         password
         <input
-        type='password'
-        value={password}
-        name='password'
-        onChange={({ target }) => setPassword(target.value)}/>
+          type='password'
+          value={password}
+          name='password'
+          onChange={({ target }) => setPassword(target.value)}/>
       </div>
       <button type='submit'>login</button>
     </form>
@@ -85,7 +85,7 @@ const App = () => {
       const changedBlog = await blogService.update(id, blogObject)
       setBlogs(blogs
         .map(blog => blog.id === changedBlog.id ? changedBlog : blog))
-      console.log(blogs);
+      console.log(blogs)
     } catch (exception) {
       setFlashMessage(exception.message)
       setFlashType('error')
@@ -99,7 +99,7 @@ const App = () => {
   const removeBlog = async (id) => {
 
     try {
-      const changedBlog = await blogService.deleteBlog(id)
+      await blogService.deleteBlog(id)
       setBlogs(blogs
         .filter(blog => blog.id !== id))
       // console.log(blogs);
@@ -119,8 +119,8 @@ const App = () => {
       {blogs
         .sort((blogA, blogB) => blogB.likes - blogA.likes)
         .map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
-      )}
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
+        )}
     </div>
   )
 
@@ -137,7 +137,7 @@ const App = () => {
         setFlashType('')
       }, 5000)
     } catch (exception) {
-      console.log("exception: ", exception)
+      console.log('exception: ', exception)
       setFlashMessage(exception.message)
       setFlashType('error')
       setTimeout(() => {
@@ -151,7 +151,7 @@ const App = () => {
 
   const createNewForm = () => (
     <Togglable buttonLabel='create' refs={blogFormRef}>
-      <BlogForm 
+      <BlogForm
         createBlog={addNewBlog}
       />
     </Togglable>
@@ -168,13 +168,13 @@ const App = () => {
     <div>
       <h1>blogs</h1>
       <Flash message={flashMessage} type={flashType} />
-      
 
-      {user === null 
+
+      {user === null
         ? <div>
           <h1>log in to application</h1>
           {loginForm()}
-          </div>
+        </div>
         : <div>
           <div className='login-user'>
             {user.name ? user.name : user.username} logged in
@@ -182,7 +182,7 @@ const App = () => {
           </div>
           {createNewForm()}
           {blogApplication()}
-          </div>
+        </div>
       }
     </div>
   )
