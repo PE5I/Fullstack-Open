@@ -13,8 +13,6 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
       title: blog.title,
       url: blog.url
     })
-
-    // updateBlog(updatedBlog)
   }
 
   const handleRemoveClick = () => {
@@ -28,8 +26,8 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
       <div className='headline'>
         <span className='title'>{blog.title} </span>
         <span className='author'>- {blog.author}</span>
-        <span className='visibility'>
-          <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
+        <span>
+          <button className='visible-button' onClick={toggleView}>{view ? 'hide' : 'view'}</button>
         </span>
       </div>
       {view ?
@@ -37,7 +35,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           <div className='url'>{blog.url}</div>
           <div>
             <span className='likes'>likes {blog.likes}</span>
-            <button onClick={handleLikeClick} >like</button>
+            <button className='like-button' onClick={handleLikeClick}>like</button>
           </div>
           <div className='user'>
             {blog.user.name ? blog.user.name : blog.user.username}
