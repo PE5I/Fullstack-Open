@@ -25,19 +25,28 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
 
   return (
     <div className={'blog-post'}>
-      {blog.title} - {blog.author} <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
+      <div className='headline'>
+        <span className='title'>{blog.title} </span>
+        <span className='author'>- {blog.author}</span>
+        <span className='visibility'>
+          <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
+        </span>
+      </div>
       {view ?
         <div>
-          <div>{blog.url}</div>
+          <div className='url'>{blog.url}</div>
           <div>
-        likes {blog.likes}
+            <span className='likes'>likes {blog.likes}</span>
             <button onClick={handleLikeClick} >like</button>
           </div>
-          <div>{blog.user.name ? blog.user.name : blog.user.username}</div>
-          <div>
+          <div className='user'>
+            {blog.user.name ? blog.user.name : blog.user.username}
+          </div>
+          <div className='remove-button'>
             <button onClick={handleRemoveClick}>remove</button>
           </div>
-        </div> : ''}
+        </div>
+        : ''}
       {/* <div style={hideWhenVisible}>
       <button onClick={toggleView}>view</button>
     </div> */}
