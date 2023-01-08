@@ -115,7 +115,7 @@ const App = () => {
           />
         </Togglable> :
         <div>
-          <p>{user.name} logged-in</p>
+          <p>{user.username} logged-in</p>
           {noteForm()}
         </div>
       }
