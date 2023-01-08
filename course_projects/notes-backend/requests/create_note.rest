@@ -24,3 +24,12 @@ Content-Type: application/json
   "important": false,
   "userId": "63ae3a6161c27a394cb9a58a"
 }
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "mypassword!"
+}
