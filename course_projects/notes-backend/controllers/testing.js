@@ -1,4 +1,4 @@
-const testingRouter = require('events').Router()
+const testingRouter = require('express').Router()
 const Note = require('../models/note')
 const User = require('../models/user')
 
