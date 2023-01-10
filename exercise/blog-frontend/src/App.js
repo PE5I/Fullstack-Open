@@ -62,6 +62,7 @@ const App = () => {
       <div>
         username
         <input
+          id='username'
           type='text'
           value={username}
           name='username'
@@ -70,12 +71,13 @@ const App = () => {
       <div>
         password
         <input
+          id='password'
           type='password'
           value={password}
           name='password'
           onChange={({ target }) => setPassword(target.value)}/>
       </div>
-      <button type='submit'>login</button>
+      <button id='login-button' type='submit'>login</button>
     </form>
   )
 
@@ -102,6 +104,12 @@ const App = () => {
       await blogService.deleteBlog(id)
       setBlogs(blogs
         .filter(blog => blog.id !== id))
+      setFlashMessage('Blog removed successfully')
+      setFlashType('message')
+      setTimeout(() => {
+        setFlashMessage('')
+        setFlashType('')
+      }, 5000)
       // console.log(blogs);
     } catch (exception) {
       setFlashMessage(exception.message)
@@ -166,10 +174,8 @@ const App = () => {
 
   return (
     <div>
-      <h1>blogs</h1>
+      <h1>Blogs</h1>
       <Flash message={flashMessage} type={flashType} />
-
-
       {user === null
         ? <div>
           <h1>log in to application</h1>
@@ -178,7 +184,7 @@ const App = () => {
         : <div>
           <div className='login-user'>
             {user.name ? user.name : user.username} logged in
-            <button onClick={handleLogout}>logout</button>
+            <button id='logout-button' onClick={handleLogout}>logout</button>
           </div>
           {createNewForm()}
           {blogApplication()}
