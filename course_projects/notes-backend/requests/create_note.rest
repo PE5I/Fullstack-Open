@@ -1,0 +1,35 @@
+GET http://localhost:3001/api/notes
+
+###
+
+PUT http://localhost:3001/api/notes/63a25d45d442a21ad7449d64
+Content-Type: application/json
+
+{
+  "content": "lol",
+  "important": false
+}
+
+###
+
+DELETE http://localhost:3001/api/notes/639ffb1bb8e2e1cf0abf18ce
+
+###
+
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "lolll",
+  "important": false,
+  "userId": "63ae3a6161c27a394cb9a58a"
+}
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "mypassword!"
+}
