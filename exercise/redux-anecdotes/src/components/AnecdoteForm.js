@@ -9,19 +9,14 @@ const AnecdoteForm = () => {
   const create = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-
-    const newObject = {
-      content,
-      votes: 0
-    }
     event.target.anecdote.value = ''
-    const newAnecdote = await noteService.create(newObject)
+    // const newAnecdote = await noteService.create(content)
     // const anecdoteObject = {
     //   content: newAnecdote.content,
     //   id: newAnecdote.id,
     //   votes: 0
     // }
-    dispatch(createAnecdote(newAnecdote))
+    dispatch(createAnecdote(content))
     dispatch(createNotification(`you created anecdote '${content}'`))
     setTimeout(() => {
       dispatch(removeNotification())

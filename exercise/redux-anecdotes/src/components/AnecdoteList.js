@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteFor } from '../reducers/anecdoteReducer'
-import { createNotification, removeNotification } from '../reducers/notificationReducer.js'
+import { upvote } from '../reducers/anecdoteReducer'
+import { createNotification, removeNotification, setNotification } from '../reducers/notificationReducer.js'
 import anecdoteService from '../services/anecdotes'
 
 const Anecdote = ({ anecdote, handleClick }) => {
@@ -26,19 +26,20 @@ const AnecdoteList = () => {
     .filter(anecdote => anecdote.content.toLowerCase().includes(anecdoteFilter.toLowerCase()))
     .sort((a,b) => b.votes - a.votes)
 
-  const handleLike = async (anecdote) => {
+  const handleLike = (anecdote) => {
     // console.log(event)
-    const updateObject = {
-      content: anecdote.content,
-      id: anecdote.id,
-      votes: anecdote.votes + 1
-    }
-    const updatedNote = await anecdoteService.update(anecdote.id, updateObject)
-    dispatch(voteFor(updatedNote.id))
-    dispatch(createNotification(`you voted '${updatedNote.content}'`))
-    setTimeout(() => {
-      dispatch(removeNotification())
-    }, 5000)
+    // const updateObject = {
+    //   content: anecdote.content,
+    //   id: anecdote.id,
+    //   votes: anecdote.votes + 1
+    // }
+    // const updatedNote = await anecdoteService.update(anecdote.id, updateObject)
+    dispatch(upvote(anecdote))
+    // dispatch(createNotification(`you voted '${anecdote.content}'`))
+    // setTimeout(() => {
+    //   dispatch(removeNotification())
+    // }, 5000)
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 5000))
   }
 
   // const sortedAnecdotes = [...anecdotes]

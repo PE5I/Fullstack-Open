@@ -13,7 +13,11 @@ const update = async (id, updateObject) => {
   return response.data
 }
 
-const create = async (newObject) => {
+const create = async (content) => {
+  const newObject = {
+    content,
+    votes: 0
+  }
   const response = await axios.post(baseUrl, newObject)
 
   return response.data
