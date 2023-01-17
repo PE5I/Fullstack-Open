@@ -8,13 +8,11 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     createNotification(state, action) {
-      const message = action.payload
-      state = message
-      return state
+      return action.payload
     },
     removeNotification(state, action) {
-      state = ''
-      return state
+      // state = ''
+      return ''
     }
   }
 })
@@ -22,11 +20,19 @@ const notificationSlice = createSlice({
 export const { createNotification, removeNotification } = notificationSlice.actions
 
 export const setNotification = (message, timeout) => {
-  return async dispatch => {
-    dispatch(createNotification(message))
-    setTimeout(() => {
+
+  return async (dispatch, getState) => {
+    // clearTimeout(timeoutID)
+    let id = getState().notification.timeoutID
+    clearTimeout(id)
+
+    const timeoutID = setTimeout(() => {
       dispatch(removeNotification())
     }, timeout)
+
+    dispatch(createNotification({ message, timeoutID }))
+
+    
   }
 }
 
