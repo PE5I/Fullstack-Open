@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import Blog from './components/BlogList'
 import Flash from './components/Flash'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -102,7 +102,7 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <Flash message={flashMessage} type={flashType} />
+      <Flash />
       {user === null ? (
         <div>
           <h1>log in to application</h1>

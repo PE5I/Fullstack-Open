@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import blogs from '../services/blogs'
 import blogService from '../services/blogs'
 
 const blogSlice = createSlice({
@@ -24,7 +23,7 @@ const blogSlice = createSlice({
     // },
     deleteBlog(state, action) {
       const id = action.payload
-      return blogs.filter(blog => blog.id !== id)
+      return state.filter(blog => blog.id !== id)
     },
     setBlog(state, action) {
       // state = action.payload

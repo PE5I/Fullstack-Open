@@ -1,9 +1,19 @@
-const Flash = ({ message, type }) => {
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+
+
+const Flash = () => {
+  const message = useSelector(state => state.flash)
+  // useEffect(() => {
+  //   const message = useSelector(state => state.flash)
+  // })
+
   if (message === '') {
     return
   }
+  console.log(message)
 
-  return <div className={type}>{message}</div>
+  return <div className="message">{message}</div>
 }
 
 export default Flash
