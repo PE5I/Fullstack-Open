@@ -3,11 +3,7 @@ const Flash = ({ message, type }) => {
     return
   }
 
-  return (
-    <div className={type}>
-      { message }
-    </div>
-  )
+  return <div className={type}>{message}</div>
 }
 
 export default Flash

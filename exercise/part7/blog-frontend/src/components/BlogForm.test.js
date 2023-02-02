@@ -5,7 +5,6 @@ import BlogForm from './BlogForm'
 import userEvent from '@testing-library/user-event'
 
 describe('<BlogForm /> ', () => {
-
   test('form event handler is called with the right details', async () => {
     const createBlog = jest.fn()
     const user = userEvent.setup()

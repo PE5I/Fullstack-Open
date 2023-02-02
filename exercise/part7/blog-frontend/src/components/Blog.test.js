@@ -12,7 +12,7 @@ describe('<Blog />', () => {
 
   beforeEach(() => {
     newUser = {
-      name: 'admin'
+      name: 'admin',
     }
 
     blog = {
@@ -20,12 +20,14 @@ describe('<Blog />', () => {
       author: 'test author',
       url: 'test://url',
       likes: 99,
-      user: newUser
+      user: newUser,
     }
 
     mockUpdateHandler = jest.fn()
 
-    container = render(<Blog blog={blog} updateBlog={mockUpdateHandler} />).container
+    container = render(
+      <Blog blog={blog} updateBlog={mockUpdateHandler} />
+    ).container
   })
 
   test('only title and author are shown when blog is initially displayed', () => {
