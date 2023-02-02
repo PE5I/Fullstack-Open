@@ -1,27 +1,24 @@
-
-
-describe('Blog app', function() {
-  beforeEach(function() {
+describe('Blog app', function () {
+  beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     cy.visit('http://localhost:3000')
   })
 
-  it('front page can be opened', function() {
+  it('front page can be opened', function () {
     cy.contains('Blogs')
     cy.contains('log in to application')
   })
 
-  describe('Login', function() {
-    beforeEach(function() {
+  describe('Login', function () {
+    beforeEach(function () {
       cy.request('POST', 'http://localhost:3003/api/users', {
         name: 'Pesi',
         username: 'pesi',
-        password: 'secret'
+        password: 'secret',
       })
       cy.visit('http://localhost:3000')
-
     })
-    it('succeeds with correct credentials', function() {
+    it('succeeds with correct credentials', function () {
       cy.get('#username').type('pesi')
       cy.get('#password').type('secret')
       cy.get('#login-button').click()
@@ -29,7 +26,7 @@ describe('Blog app', function() {
       cy.contains('Pesi logged in')
     })
 
-    it('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function () {
       cy.get('#username').type('admin')
       cy.get('#password').type('secret')
       cy.get('#login-button').click()
@@ -38,12 +35,12 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When logged in', function() {
-    beforeEach(function() {
+  describe('When logged in', function () {
+    beforeEach(function () {
       cy.request('POST', 'http://localhost:3003/api/users', {
         name: 'Pesi',
         username: 'pesi',
-        password: 'secret'
+        password: 'secret',
       })
       cy.visit('http://localhost:3000')
       cy.get('#username').type('pesi')
@@ -51,7 +48,7 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created', function () {
       cy.contains('create').click()
       cy.get('#title').type('New blog for a new day')
       cy.get('#author').type('New Author on the Blog')
@@ -67,17 +64,17 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When user is logged in and creates a blog', function() {
-    beforeEach(function() {
+  describe('When user is logged in and creates a blog', function () {
+    beforeEach(function () {
       cy.request('POST', 'http://localhost:3003/api/users', {
         name: 'Pesi',
         username: 'pesi',
-        password: 'secret'
+        password: 'secret',
       })
       cy.request('POST', 'http://localhost:3003/api/users', {
         name: 'Someone Else',
         username: 'someone',
-        password: 'supersecret'
+        password: 'supersecret',
       })
       cy.visit('http://localhost:3000')
       cy.get('#username').type('pesi')
@@ -91,13 +88,13 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
     })
 
-    it('user can like a blog', function() {
+    it('user can like a blog', function () {
       cy.contains('view').click()
       cy.get('#like-button').click()
       cy.contains('likes 1')
     })
 
-    it('user who did not create blog cannot delete it', function() {
+    it('user who did not create blog cannot delete it', function () {
       cy.get('#logout-button').click()
       cy.get('#username').type('someone')
       cy.get('#password').type('supersecret')
@@ -108,13 +105,13 @@ describe('Blog app', function() {
       cy.contains('New blog for a new day')
     })
 
-    it('user who owns the blog can delete it', function() {
+    it('user who owns the blog can delete it', function () {
       cy.contains('view').click()
       cy.get('#remove-button').click()
       cy.contains('Blog removed successfully')
     })
 
-    it('when user adds another blog with more likes, that blog will be ordered first', function() {
+    it('when user adds another blog with more likes, that blog will be ordered first', function () {
       // like the initial post and hide it
       cy.contains('view').click()
       cy.get('#like-button').click()
