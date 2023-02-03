@@ -6,11 +6,13 @@ import App from './App'
 import './index.css'
 import blogReducer from './reducers/blogReducer'
 import flashReducer from './reducers/flashReducer'
+import userReducer from './reducers/userReducer'
 
 const store = configureStore({
   reducer: {
     blogs: blogReducer,
     flash: flashReducer,
+    user: userReducer,
   }
 })
 

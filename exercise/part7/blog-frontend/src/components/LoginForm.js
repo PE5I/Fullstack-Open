@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { createFlashNotification } from '../reducers/flashReducer'
-import blogService from '../services/blogs'
+import { createUser } from '../reducers/userReducer'
 import loginService from '../services/login'
 
 
@@ -18,7 +18,8 @@ const LoginForm = () => {
       const user = await loginService.login({ username, password })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
+      // blogService.setToken(user.token)
+      dispatch(createUser(user))
       setUsername('')
       setPassword('')
     } catch (exception) {

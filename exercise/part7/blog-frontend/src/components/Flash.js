@@ -4,9 +4,6 @@ import { useSelector } from 'react-redux'
 
 const Flash = () => {
   const message = useSelector(state => state.flash)
-  // useEffect(() => {
-  //   const message = useSelector(state => state.flash)
-  // })
 
   if (message === '') {
     return
