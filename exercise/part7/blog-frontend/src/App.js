@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/BlogList'
 import Flash from './components/Flash'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -11,10 +12,6 @@ import { initializeBlog } from './reducers/blogReducer'
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
   // console.log(blogs)
-  const [flashMessage, setFlashMessage] = useState('')
-  const [flashType, setFlashType] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
@@ -32,57 +29,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({ username, password })
-
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-
-      setUser(user)
-      blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      console.log(exception)
-      setFlashMessage('wrong username or password')
-      setFlashType('error')
-      setTimeout(() => {
-        setFlashMessage('')
-        setFlashType('')
-      }, 5000)
-    }
-  }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id="username"
-          type="text"
-          value={username}
-          name="username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id="password"
-          type="password"
-          value={password}
-          name="password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">
-        login
-      </button>
-    </form>
-  )
 
   const blogFormRef = useRef()
 
@@ -106,7 +52,8 @@ const App = () => {
       {user === null ? (
         <div>
           <h1>log in to application</h1>
-          {loginForm()}
+          {/* {loginForm()} */}
+          <LoginForm />
         </div>
       ) : (
         <div>
