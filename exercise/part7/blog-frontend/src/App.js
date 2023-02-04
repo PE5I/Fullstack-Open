@@ -16,6 +16,7 @@ import { initializeUser } from './reducers/userReducer'
 import Users from './components/User'
 import UserProfile from './components/UserProfile'
 import BlogPost from './components/BlogPost'
+import Navigation from './components/Navigation'
 
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
@@ -41,12 +42,6 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const handleLogout = (event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBlogappUser')
-    dispatch(removeUser())
-  }
-
   return (
     <Router>
       <div>
@@ -59,12 +54,7 @@ const App = () => {
           </div>
         ) : (
           <div>
-            <div className="login-user">
-              {loggedInUser.name ? loggedInUser.name : loggedInUser.username} logged in
-              <button id="logout-button" onClick={handleLogout}>
-                logout
-              </button>
-            </div>
+            <Navigation />
             <Routes>
               {/* from https://stackoverflow.com/a/69968312 */}
               <Route path="/"

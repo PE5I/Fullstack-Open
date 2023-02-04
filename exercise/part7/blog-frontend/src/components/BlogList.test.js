@@ -2,9 +2,9 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Blog from './Blog'
+import BlogList from './BlogList'
 
-describe('<Blog />', () => {
+describe('<BlogList />', () => {
   let newUser
   let blog
   let container
@@ -26,7 +26,7 @@ describe('<Blog />', () => {
     mockUpdateHandler = jest.fn()
 
     container = render(
-      <Blog blog={blog} updateBlog={mockUpdateHandler} />
+      <BlogList blog={blog} updateBlog={mockUpdateHandler} />
     ).container
   })
 
