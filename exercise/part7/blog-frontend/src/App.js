@@ -14,6 +14,7 @@ import {
 
 import { initializeUser } from './reducers/userReducer'
 import Users from './components/User'
+import UserProfile from './components/UserProfile'
 
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
@@ -76,6 +77,7 @@ const App = () => {
                 }
               />
               <Route path="/users" element={<Users />} />
+              <Route path="/users/:id" element={<UserProfile />} />
             </Routes>
           </div>
         )}
