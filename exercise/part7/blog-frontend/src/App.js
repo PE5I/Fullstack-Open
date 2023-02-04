@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Fragment } from 'react'
 import Blog from './components/BlogList'
 import Flash from './components/Flash'
 import BlogForm from './components/BlogForm'
@@ -6,7 +6,14 @@ import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlog } from './reducers/blogReducer'
-import { createUser, removeUser } from './reducers/userReducer'
+import { createUser, removeUser } from './reducers/loggedInUserReducer'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
+
+import { initializeUser } from './reducers/userReducer'
+import Users from './components/User'
 
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
@@ -14,11 +21,11 @@ const App = () => {
   // const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const loggedInUser = useSelector(state => state.loggedInUser)
 
   useEffect(() => {
-    // blogService.getAll().then((blogs) => setBlogs(blogs))
     dispatch(initializeBlog())
+    dispatch(initializeUser())
   }, [])
 
   useEffect(() => {
@@ -39,29 +46,41 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Blogs</h1>
-      <Flash />
-      {user === null ? (
-        <div>
-          <h1>Login</h1>
-          <LoginForm />
-        </div>
-      ) : (
-        <div>
-          <div className="login-user">
-            {user.name ? user.name : user.username} logged in
-            <button id="logout-button" onClick={handleLogout}>
-              logout
-            </button>
+    <Router>
+      <div>
+        <h1>Blogs</h1>
+        <Flash />
+        {loggedInUser === null ? (
+          <div>
+            <h1>Login</h1>
+            <LoginForm />
           </div>
-          <Togglable buttonLabel="create" refs={blogFormRef}>
-            <BlogForm />
-          </Togglable>
-          <Blog />
-        </div>
-      )}
-    </div>
+        ) : (
+          <div>
+            <div className="login-user">
+              {loggedInUser.name ? loggedInUser.name : loggedInUser.username} logged in
+              <button id="logout-button" onClick={handleLogout}>
+                logout
+              </button>
+            </div>
+            <Routes>
+              {/* from https://stackoverflow.com/a/69968312 */}
+              <Route path="/"
+                element={
+                  <>
+                    <Togglable buttonLabel="create" refs={blogFormRef}>
+                      <BlogForm />
+                    </Togglable>
+                    <Blog />
+                  </>
+                }
+              />
+              <Route path="/users" element={<Users />} />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </Router>
   )
 }
 

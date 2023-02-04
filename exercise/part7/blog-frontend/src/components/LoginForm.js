@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { createFlashNotification } from '../reducers/flashReducer'
-import { createUser } from '../reducers/userReducer'
+import { createUser } from '../reducers/loggedInUserReducer'
 import loginService from '../services/login'
 
 
