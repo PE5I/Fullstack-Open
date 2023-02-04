@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Fragment } from 'react'
-import Blog from './components/BlogList'
+import BlogList from './components/BlogList'
 import Flash from './components/Flash'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -15,6 +15,7 @@ import {
 import { initializeUser } from './reducers/userReducer'
 import Users from './components/User'
 import UserProfile from './components/UserProfile'
+import BlogPost from './components/BlogPost'
 
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
@@ -72,12 +73,13 @@ const App = () => {
                     <Togglable buttonLabel="create" refs={blogFormRef}>
                       <BlogForm />
                     </Togglable>
-                    <Blog />
+                    <BlogList />
                   </>
                 }
               />
               <Route path="/users" element={<Users />} />
               <Route path="/users/:id" element={<UserProfile />} />
+              <Route path="/blogs/:id" element={<BlogPost />} />
             </Routes>
           </div>
         )}

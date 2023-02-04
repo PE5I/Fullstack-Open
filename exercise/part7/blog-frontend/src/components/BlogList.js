@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { createFlashNotification } from '../reducers/flashReducer'
 
@@ -13,7 +14,7 @@ const Blog = ({ blog, handleLikeClick, handleRemoveClick }) => {
   return (
     <div className={'blog-post'}>
       <div className="headline">
-        <span className="title">{blog.title} </span>
+        <span className="title"><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></span>
         <span className="author">- {blog.author}</span>
         <span>
           <button className="visible-button" onClick={toggleView}>
@@ -60,11 +61,8 @@ const BlogList = () => {
     // const blog = e.target
     dispatch(createFlashNotification(`you liked ${blog.title}`, 5000))
     const blogObject = {
-      user: blog.user,
+      ...blog,
       likes: blog.likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
     }
 
     dispatch(updateBlog(blog.id, blogObject))
