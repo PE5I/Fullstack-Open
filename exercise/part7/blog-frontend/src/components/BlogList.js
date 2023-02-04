@@ -53,6 +53,8 @@ const BlogList = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
 
+  console.log("blogs=> ", blogs)
+
   const handleLikeClick = (blog) => {
     // console.log(e)
     // const blog = e.target
