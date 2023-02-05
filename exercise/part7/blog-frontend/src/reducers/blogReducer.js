@@ -84,8 +84,13 @@ export const removeBlog = (id) => {
 
 export const addBlog = (newBlogObject) => {
   return async dispatch => {
-    const newBlog = await blogService.create(newBlogObject)
-    dispatch(appendBlog(newBlog))
+    try {
+      const newBlog = await blogService.create(newBlogObject)
+      dispatch(appendBlog(newBlog))
+      dispatch(createFlashNotification(`created blog '${newBlog.title}'`))
+    } catch (e) {
+      dispatch(createFlashNotification(`error adding blog: ${e}`))
+    }
   }
 }
 

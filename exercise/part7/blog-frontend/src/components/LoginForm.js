@@ -1,3 +1,4 @@
+import { Button, TextField } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { createFlashNotification } from '../reducers/flashReducer'
@@ -31,28 +32,37 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleLogin}>
       <div>
-        username
-        <input
-          id="username"
-          type="text"
+        <TextField
+          label="username"
           value={username}
-          name="username"
-          onChange={({ target }) => setUsername(target.value)}
+          onChange={({ target }) => setUsername(target.value) }
         />
       </div>
+      {/* <input
+        id="username"
+        type="text"
+        value={username}
+        name="username"
+        onChange={({ target }) => setUsername(target.value)}
+      /> */}
       <div>
-        password
-        <input
-          id="password"
-          type="password"
+        <TextField
+          label="password"
           value={password}
-          name="password"
-          onChange={({ target }) => setPassword(target.value)}
+          type="password"
+          onChange={({ target }) => setPassword(target.value) }
         />
       </div>
-      <button id="login-button" type="submit">
+      {/* <input
+        id="password"
+        type="password"
+        value={password}
+        name="password"
+        onChange={({ target }) => setPassword(target.value)}
+      /> */}
+      <Button variant="contained" color="primary" type="submit">
         login
-      </button>
+      </Button>
     </form>
   )
 }

@@ -17,6 +17,7 @@ import Users from './components/User'
 import UserProfile from './components/UserProfile'
 import BlogPost from './components/BlogPost'
 import Navigation from './components/Navigation'
+import { Container } from '@mui/material'
 
 const App = () => {
   // const blogs = useSelector(state => state.blogs)
@@ -44,7 +45,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <Container>
         <h1>Blogs</h1>
         <Flash />
         {loggedInUser === null ? (
@@ -73,7 +74,7 @@ const App = () => {
             </Routes>
           </div>
         )}
-      </div>
+      </Container>
     </Router>
   )
 }

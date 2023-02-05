@@ -7,7 +7,7 @@ const flashSlice = createSlice({
     setFlash(state, action) {
       return action.payload
     },
-    clearFlash(state, action) {
+    clearFlash() {
       return ''
     }
   }
@@ -16,8 +16,11 @@ const flashSlice = createSlice({
 export const { setFlash, clearFlash } = flashSlice.actions
 
 export const createFlashNotification = (message, timeout) => {
+  if (!timeout) { timeout = 5000 }
+
   return async dispatch => {
     dispatch(setFlash(message))
+    console.log("timeout=>", timeout)
     setTimeout(() => {
       dispatch(clearFlash())
     }, timeout)
