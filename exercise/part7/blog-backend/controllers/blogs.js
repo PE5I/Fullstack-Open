@@ -1,10 +1,13 @@
 const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const Comment = require('../models/comment')
 const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { content: 1 })
   response.json(blogs)
 })
 
@@ -33,6 +36,8 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+// blogsRouter.post('/:blogId/:')
+
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -47,7 +52,6 @@ blogsRouter.put('/:id', async (request, response) => {
     return response.status(401).json({ error: 'permission denied' })
   }
 
-  // const user = await User.findById(body.userId)
   const blog_id = request.params.id
 
   const blog = new Blog({
@@ -62,11 +66,6 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog
     .findByIdAndUpdate(blog_id, blog, { new: true })
     .populate('user', { username: 1, name: 1 })
-  // const updatedBlog = await blogToUpdate.save(blog)
-  // user.blogs()
-  // user.blogs.findByIdAndRemove(blog_id)
-  // user.blogs = user.blogs.concat(updatedBlog.id)
-  // await user.save()
 
   response.status(201).json(updatedBlog)
 })
