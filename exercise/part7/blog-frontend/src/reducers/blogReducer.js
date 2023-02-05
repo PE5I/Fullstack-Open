@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { createFlashNotification } from './flashReducer'
 import blogService from '../services/blogs'
 
 const blogSlice = createSlice({
@@ -57,8 +58,13 @@ export const initializeBlog = () => {
 
 export const updateBlog = (id, blogObject) => {
   return async dispatch => {
-    const changedBlog = await blogService.update(id, blogObject)
-    dispatch(changeBlog(changedBlog))
+    try {
+      const changedBlog = await blogService.update(id, blogObject)
+      dispatch(changeBlog(changedBlog))
+      dispatch(createFlashNotification(`you liked ${blogObject.title}`, 5000))
+    } catch (e) {
+      dispatch(createFlashNotification(`error liking blog post ${blogObject.title}: ${e}`, 5000))
+    }
   }
 }
 

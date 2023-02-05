@@ -8,7 +8,6 @@ const Flash = () => {
   if (message === '') {
     return
   }
-  console.log(message)
 
   return <div className="message">{message}</div>
 }

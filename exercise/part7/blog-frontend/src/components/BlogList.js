@@ -59,7 +59,6 @@ const BlogList = () => {
   const handleLikeClick = (blog) => {
     // console.log(e)
     // const blog = e.target
-    dispatch(createFlashNotification(`you liked ${blog.title}`, 5000))
     const blogObject = {
       ...blog,
       likes: blog.likes + 1,

@@ -49,6 +49,7 @@ const BlogPost = () => {
       ...blog,
       likes: blog.likes + 1,
     }
+    console.log(blogObject)
 
     dispatch(updateBlog(blog.id, blogObject))
   }
@@ -67,6 +68,7 @@ const BlogPost = () => {
           like
         </button>
       </p>
+      <p>added by {blog.user.username}</p>
       <h2>comments</h2>
       <CommentForm blogId={blog.id} />
       <ul>
