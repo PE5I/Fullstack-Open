@@ -1,7 +1,40 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { createFlashNotification } from "../reducers/flashReducer"
-import { updateBlog } from "../reducers/blogReducer"
+import { updateBlog, addComment } from "../reducers/blogReducer"
+import { useState } from "react"
+import blogService from '../services/blogs'
+
+const Comment = ({ comment }) => {
+  return (
+    <li>{comment}</li>
+  )
+}
+
+const CommentForm = ({ blogId }) => {
+  const [comment, setComment] = useState('')
+  const dispatch = useDispatch()
+
+  const handleComment = (event) => {
+    event.preventDefault()
+
+    setComment(event.target.value)
+  }
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault()
+
+    dispatch(addComment(blogId, comment))
+    setComment('')
+  }
+
+  return (
+    <form onSubmit={handleCommentSubmit}>
+      <input value={comment} onChange={handleComment}/>
+      <button>add comment</button>
+    </form>
+  )
+}
 
 const BlogPost = () => {
   const { id } = useParams()
@@ -34,6 +67,11 @@ const BlogPost = () => {
           like
         </button>
       </p>
+      <h2>comments</h2>
+      <CommentForm blogId={blog.id} />
+      <ul>
+        {blog.comments.map(comment => <Comment key={comment.id} comment={comment.content} />)}
+      </ul>
     </div>
   )
 }
