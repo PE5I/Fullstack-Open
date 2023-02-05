@@ -1,0 +1,39 @@
+.message {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.blog-post {
+  color: black;
+  /* font-size: 15px; */
+  border-style: solid;
+  border-width: 2px;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.login-user {
+  color: black;
+  /* font-size: 15px; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
