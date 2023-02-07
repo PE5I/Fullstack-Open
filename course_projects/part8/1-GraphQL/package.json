@@ -1,0 +1,15 @@
+{
+  "name": "1-graphql",
+  "version": "1.0.0",
+  "description": "First GraphQL project for the FullStack Open course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.3.2",
+    "graphql": "^16.6.0"
+  }
+}
