@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_PERSON = gql`
-mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String!) {
+mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
   addPerson(
     name: $name,
     street: $street,
@@ -18,6 +18,15 @@ mutation createPerson($name: String!, $street: String!, $city: String!, $phone: 
   }
 }
 `
+
+export const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password)  {
+      value
+    }
+  }
+`
+
 
 export const FIND_PERSON = gql`
   query findPersonByName($nameToSearch: String!) {
