@@ -116,7 +116,7 @@ const typeDefs = `
   type Author {
     name: String!
     born: Int
-    bookCount: Int!
+    bookCount: Int
     id: ID!
   }
 
@@ -199,16 +199,16 @@ const resolvers = {
       return result
     },
     allAuthors: async (root, args) => {
-      return Author.find({})
+      return await Author.find({})
     },
     me: async (root, args, context) => {
       return context.currentUser
     }
   },
   Author: {
-    bookCount: async (root) => {
-      return Book.countDocuments({ author })
-    }
+    // bookCount: async (root) => {
+    //   return Author.countDocuments()
+    // }
   },
   Mutation: {
     addBook: async (root, args, context) => {
