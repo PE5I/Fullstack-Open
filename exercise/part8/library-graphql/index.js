@@ -167,6 +167,7 @@ const typeDefs = `
     ): Token
   }
 `
+console.log("hihiihih");
 
 const resolvers = {
   Query: {
@@ -245,19 +246,16 @@ const resolvers = {
 
       const author = await Author.findOne({ name: args.name }) //authors.find(a => a.name === args.name)
       if (!author) return null
-      
-      const updatedAuthor = new Author({ 
-        ...author, 
-        born: args.setBornTo
-      })
+      author.born = args.setBornTo
 
       try {
-        await updatedAuthor.save()
+        console.log("try save");
+        await author.save()
       } catch (error) {
         throw new GraphQLError(error)
       }
       // authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
+      return author
     },
     createUser: async (root, args) => {
       const newUser = new User({ ...args })
@@ -310,7 +308,7 @@ startStandaloneServer(server, {
   listen: { port: 4000 },
   context: async ({ req, res }) => {
     const auth = req ? req.headers.authorization : null
-    if (auth && auth.startsWith('Bearer '.toLowerCase())) {
+    if (auth && auth.startsWith('Bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), process.env.JWT_SECRET
       )

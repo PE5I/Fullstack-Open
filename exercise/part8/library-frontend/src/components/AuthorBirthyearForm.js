@@ -1,6 +1,6 @@
 import Select from 'react-select'
 import { useMutation, useQuery } from "@apollo/client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
 
 const AuthorBirthyearForm = () => {
@@ -9,12 +9,19 @@ const AuthorBirthyearForm = () => {
 
   let authors = useQuery(ALL_AUTHORS)
   const [ changeAuthorBirthyear, result ] = useMutation(EDIT_AUTHOR)
+  
+  useEffect(() => {
+    if (result.data && result.data.editAuthor === null) {
+      console.log('author not found')
+    }
+
+  }, [result.data])
+  
   if (authors.loading) {
     return <div>loading...</div>
   }
 
   authors = authors.data.allAuthors.map(author => { return { value: author.name, label: author.name }})
-  console.log(authors);
 
   const submit = (event) => {
     event.preventDefault()
