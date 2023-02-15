@@ -1,5 +1,9 @@
 
 const typeDefs = `
+  type Subscription {
+    personAdded: Person!
+  }
+
   type Address {
     street: String!
     city: String!
