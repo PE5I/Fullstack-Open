@@ -1,3 +1,13 @@
+interface ExerciseHours {
+  monday: number,
+  tuesday: number,
+  wednesday: number,
+  thursday: number,
+  friday: number,
+  saturday: number,
+  sunday: number
+}
+
 
 const calculateExercises = (hoursOfExercise: number[], targetDailyHours: number) => {
   const periodLength: number = 7;
@@ -12,4 +22,9 @@ const calculateExercises = (hoursOfExercise: number[], targetDailyHours: number)
   return Result
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 3));
+// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 3));
+try {
+
+} catch (e) {
+  console.log(e)
+}

@@ -38,3 +38,5 @@ try {
 } catch (e) {
   console.log(`Error: ${e}`)
 }
+
+export default calculateBmi;
