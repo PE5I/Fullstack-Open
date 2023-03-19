@@ -1,7 +1,7 @@
-type Operation = 'multiply' | 'add' | 'divide';
-type Result = string | number
+export type Operation = 'multiply' | 'add' | 'divide';
+type Result = string | number;
 
-const calculator = (a: number, b: number, op: Operation): number => {
+const calculator = (a: number, b: number, op: Operation): Result => {
   // console.log(printText, a*b );
   switch (op) {
     case 'multiply':
@@ -14,15 +14,15 @@ const calculator = (a: number, b: number, op: Operation): number => {
     default:
       throw new Error('Operation is not multiply, add, or divide!');
   }
-}
+};
 
 // multiplicator(2, 4, '2 * 4 = ');
 try {
-  const a: number = Number(process.argv[2])
-  const b: number = Number(process.argv[3])
-  const operation: unknown = process.argv[4]
+  const a = Number(process.argv[2]);
+  const b = Number(process.argv[3]);
+  const operation: unknown = process.argv[4];
   if (operation === 'multiply' || operation === 'add' || operation === 'divide') {
-    console.log('result: ', calculator(a, b, operation))
+    console.log('result: ', calculator(a, b, operation));
   }
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: ';
@@ -32,3 +32,4 @@ try {
   console.log(errorMessage);
 }
 
+export { calculator };
