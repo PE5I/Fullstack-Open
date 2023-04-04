@@ -1,4 +1,4 @@
-import { NewDiaryEntry, Weather } from "./types";
+import { NewDiaryEntry, Visibility, Weather } from "./types";
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -35,13 +35,24 @@ const parseWeather = (weather: unknown): Weather => {
   return weather;
 };
 
+const isVisibility = (param: string): param is Visibility => {
+  return Object.values(Visibility).map(v => v.toString()).includes(param);
+}
+
+const parseVisibility = (visibility: string): Visibility => {
+  if (!visibility || !isString(visibility) || !isVisibility(visibility)) {
+    throw new Error('Incorrect or missing visibility: ' + visibility);
+  }
+  return visibility
+}
+
 const toNewDiaryEntry = (object: NewDiaryEntry): NewDiaryEntry => {
   const { date, weather, visibility, comment } = object;
   const newEntry: NewDiaryEntry = {
-      date,
-      weather,
-      visibility,
-      comment,
+    date: parseDate(date),
+    weather: parseWeather(weather),
+    visibility: parseVisibility(visibility),
+    comment: parseComment(comment)
   };
 
   return newEntry;

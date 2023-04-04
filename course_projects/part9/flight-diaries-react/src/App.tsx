@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { FormEvent, FormEventHandler, useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
 
-const getDiaries = async () => {
-  const diaryEntries = await axios.get('http://localhost:3001/api/diaries');
-  console.log(diaryEntries);
-  return diaryEntries;
+const addEntry = async (entryObject: NewDiaryEntry) => {
+  const newEntry = await axios.post('http://localhost:3001/api/diaries', entryObject);
+  return newEntry.data;
 }
 
 interface Diary {
@@ -14,8 +13,17 @@ interface Diary {
   visibility: string
 }
 
+interface AxiosError extends Error {
+  response: {
+    data: {
+      error: string
+    }
+  }
+}
+
+type NewDiaryEntry = Omit<Diary, 'id'>
+
 const RenderDiary = (props: { entry: Diary }) => {
-  console.log("entry", props.entry);
   return (
     <div>
       <b>{props.entry.date}</b>
@@ -34,6 +42,7 @@ const App = () => {
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('');
   const [entries, setEntries] = useState<Diary[]>([]);
+  const [error, setError] = useState('');
 
   // let diaryEntries: Diary[] = [];
   useEffect(() => {
@@ -42,17 +51,48 @@ const App = () => {
       })
   }, [])
 
+  const handleAdd = async (event: FormEvent) => {
+    event.preventDefault()
+    const newEntry = {
+      date,
+      "visibility": viz,
+      weather,
+      comment
+    }
+
+    try {
+      const entry = await addEntry(newEntry)
+      setDate('')
+      setViz('')
+      setWeather('')
+      setComment('')
+      setEntries(entries.concat(entry))
+      console.log("entry", entry);
+    } catch (e: unknown) {
+      let message = ''
+      const error = e as AxiosError;
+      // console.log(error.response.data.error)
+      message += error.response.data.error
+      setError(message)
+      setTimeout(() => {
+        message = ''
+        setError('')
+      }, 5000);
+    }
+  }
+
   return (
     <div>
       <h1>Add new entry</h1>
-      <form>
-        date <input onChange={({ target }) => setDate(target.value)}/>
+      <p style={{color: "red"}}>{error}</p>
+      <form onSubmit={handleAdd}>
+        date <input value={date} onChange={({ target }) => setDate(target.value)}/>
         <br/>
-        visibility <input onChange={({ target }) => setViz(target.value)}/>
+        visibility <input value={viz} onChange={({ target }) => setViz(target.value)}/>
         <br/>
-        weather <input onChange={({ target }) => setWeather(target.value)}/>
+        weather <input value={weather} onChange={({ target }) => setWeather(target.value)}/>
         <br/>
-        comment <input onChange={({ target }) => setComment(target.value)}/>
+        comment <input value={comment} onChange={({ target }) => setComment(target.value)}/>
         <br/>
         <button>
           add

@@ -27,13 +27,15 @@ router.post('/', (req, res) => {
   try {
     const newDiaryEntry = toNewDiaryEntry(req.body);
     const addedEntry = diaryService.addDiary(newDiaryEntry);
+    console.log(addedEntry);
     res.json(addedEntry);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {
-      errorMessage += 'Error: ' + error.message;
+      errorMessage = 'Error: ' + error.message;
+      console.log(errorMessage);
     }
-    res.status(400).send(errorMessage);
+    res.status(400).send({ error: errorMessage });
   }
   // const { date, weather, visibility, comment } = req.body;
   // const addedEntry = diaryService.addDiary({

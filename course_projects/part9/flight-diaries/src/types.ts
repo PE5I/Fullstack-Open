@@ -5,7 +5,12 @@ export enum Weather {
   Stormy = 'stormy',
   Windy = 'windy',
 }
-export type Visibility = 'great' | 'good' | 'ok' | 'poor';
+export enum Visibility {
+  Great = 'great',
+  Rainy = 'good',
+  Ok = 'ok',
+  Poor = 'poor'
+}
 
 // interface
 export interface DiaryEntry {
