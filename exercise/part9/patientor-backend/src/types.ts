@@ -7,6 +7,9 @@ export interface DiagnosesEntry {
 
 export type NonLatinDiagnosesEntry = Omit<DiagnosesEntry, 'latin'>;
 
+export interface Entry {
+}
+
 export interface PatientRecord {
   id: string;
   name: string;
@@ -14,6 +17,7 @@ export interface PatientRecord {
   ssn: string;
   gender: string;
   occupation: string;
+  entries: Entry[];
 }
 
 export enum Gender {
@@ -24,4 +28,4 @@ export enum Gender {
 
 export type NewPatientRecord = Omit<PatientRecord, 'id'>;
 
-export type UnclassifiedPatientRecord = Omit<PatientRecord, 'ssn'>;
+export type UnclassifiedPatientRecord = Omit<PatientRecord, 'ssn' | 'entries'>;

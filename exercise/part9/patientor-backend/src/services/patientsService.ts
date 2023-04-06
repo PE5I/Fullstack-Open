@@ -2,11 +2,16 @@ import initialPatientData from '../../data/patients';
 import { UnclassifiedPatientRecord, PatientRecord, NewPatientRecord } from '../types';
 import { v1 as uuid } from 'uuid';
 
-let patientsData = initialPatientData;
+let patientsData = initialPatientData.map(p => ({...p, entries: []}));
 
 const getPatient = (): PatientRecord[] => {
   return patientsData;
 };
+
+const getById = (id: string) => {
+  const patient = patientsData.filter(p => p.id === id);
+  return patient
+}
 
 const getUnclassifiedPatientRecords = (): UnclassifiedPatientRecord[] => {
   return patientsData.map(({ id, name, dateOfBirth, gender, occupation}) => ({
@@ -21,13 +26,15 @@ const getUnclassifiedPatientRecords = (): UnclassifiedPatientRecord[] => {
 const save = (newPatientRecord: NewPatientRecord) => {
   const patientRecord = {
     id: uuid(),
-    ...newPatientRecord
+    ...newPatientRecord,
+    entries: []
   }
   patientsData = patientsData.concat(patientRecord);
 };
 
 export default {
   getPatient,
+  getById,
   getUnclassifiedPatientRecords,
   save
 };
