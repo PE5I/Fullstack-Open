@@ -9,7 +9,7 @@ const getPatient = (): PatientRecord[] => {
 };
 
 const getById = (id: string) => {
-  const patient = patientsData.filter(p => p.id === id);
+  const patient = patientsData.filter(p => p.id === id)[0];
   return patient
 }
 
