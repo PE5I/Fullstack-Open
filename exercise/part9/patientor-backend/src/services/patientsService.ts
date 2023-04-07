@@ -2,13 +2,13 @@ import initialPatientData from '../../data/patients';
 import { UnclassifiedPatientRecord, PatientRecord, NewPatientRecord } from '../types';
 import { v1 as uuid } from 'uuid';
 
-let patientsData = initialPatientData.map(p => ({...p, entries: []}));
+let patientsData = initialPatientData // initialPatientData.map(p => ({...p, entries: []}));
 
 const getPatient = (): PatientRecord[] => {
   return patientsData;
 };
 
-const getById = (id: string) => {
+const getById = (id: string): PatientRecord => {
   const patient = patientsData.filter(p => p.id === id)[0];
   return patient
 }
