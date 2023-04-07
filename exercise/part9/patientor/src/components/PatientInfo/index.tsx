@@ -4,9 +4,36 @@ import { useParams } from "react-router-dom";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 
-import { Patient } from "../../types";
+import { Entry, Patient } from "../../types";
 
 import patientService from "../../services/patients";
+
+const Entries = (props: { entries: Entry[] }) => {
+  
+  if (props.entries.length === 0) {
+    return null;
+  }
+
+  return (
+    <div>
+      {props.entries.map(e =>
+        <div>
+          <h3>entries</h3>
+          <p>
+            {e.date} {e.description}
+          </p>
+          <p>
+            <ul>
+            {e.diagnosisCodes?.map(
+              dc => <li>{dc}</li>
+            )}
+            </ul>
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
 
 
 const PatientInfo = () => {
@@ -22,6 +49,8 @@ const PatientInfo = () => {
     fetchPatientById(id!);
   }, []);
 
+  console.log(patientLookup);
+
   if (patientLookup) {
     return (
       <div className="App">
@@ -34,6 +63,7 @@ const PatientInfo = () => {
           <br/>
           occupation: {patientLookup.occupation}
         </p>
+        <Entries entries={patientLookup.entries} />
       </div>
     );
   }

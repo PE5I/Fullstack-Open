@@ -20,7 +20,4 @@ router.post('/', (req, res) => {
   res.send(savedPatientRecord).status(201).end();
 });
 
-
-
-
 export default router;
