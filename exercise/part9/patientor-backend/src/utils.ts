@@ -36,7 +36,8 @@ const toNewPatientRecord = (object: unknown): NewPatientRecord => {
       dateOfBirth: parseField(object.dateOfBirth),
       ssn: parseField(object.ssn),
       gender: parseGender(object.gender),
-      occupation: parseField(object.occupation)
+      occupation: parseField(object.occupation),
+      entries: []
     }
 
     return newRecord;

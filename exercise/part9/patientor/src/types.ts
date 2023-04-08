@@ -20,7 +20,6 @@ export enum HealthCheckRating {
 export interface BaseEntry {
   id: string;
   date: string;
-  type: string;
   specialist: string;
   description: string;
   diagnosisCodes?: Array<Diagnosis['code']>; // DiagnosesEntry['code'][];
@@ -32,17 +31,20 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
     startDate: string;
     endDate: string;
   };
+  type: "OccupationalHealthcare";
 }
 
 export interface HospitalEntry extends BaseEntry {
-  discharge?: {
+  discharge: {
     date: string;
     criteria: string;
   }
+  type: "Hospital"
 }
 
 export interface HealthCheckEntry extends BaseEntry {
   healthCheckRating?: HealthCheckRating;
+  type: "HealthCheck";
 }
 
 export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
