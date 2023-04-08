@@ -1,11 +1,11 @@
 
-export interface DiagnosesEntry {
+export interface Diagnosis {
   code: string;
   name: string;
   latin?: string;
 }
 
-export type NonLatinDiagnosesEntry = Omit<DiagnosesEntry, 'latin'>;
+export type NonLatinDiagnosesEntry = Omit<Diagnosis, 'latin'>;
 
 export enum HealthCheckRating {
   "Healthy" = 0,
@@ -20,7 +20,7 @@ export interface BaseEntry {
   type: string;
   specialist: string;
   description: string;
-  diagnosisCodes?: Array<DiagnosesEntry['code']>; // DiagnosesEntry['code'][];
+  diagnosisCodes?: Array<Diagnosis['code']>; // DiagnosesEntry['code'][];
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {

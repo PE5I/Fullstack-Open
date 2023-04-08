@@ -7,4 +7,10 @@ router.get('/', (_req, res) => {
   res.send(diagnosesService.getNonLatinDiagnoses());
 });
 
+router.post('/', (req, res) => {
+  const { code, name } = req.body
+  const savedDiagnosis = diagnosesService.save({ code, name })
+  res.send(savedDiagnosis);
+})
+
 export default router;

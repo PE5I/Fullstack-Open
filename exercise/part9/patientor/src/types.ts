@@ -10,12 +10,6 @@ export enum Gender {
   Other = "other"
 }
 
-export interface DiagnosesEntry {
-  code: string;
-  name: string;
-  latin?: string;
-}
-
 export enum HealthCheckRating {
   "Healthy" = 0,
   "LowRisk" = 1,
@@ -29,7 +23,7 @@ export interface BaseEntry {
   type: string;
   specialist: string;
   description: string;
-  diagnosisCodes?: Array<DiagnosesEntry['code']>; // DiagnosesEntry['code'][];
+  diagnosisCodes?: Array<Diagnosis['code']>; // DiagnosesEntry['code'][];
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
