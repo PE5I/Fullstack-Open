@@ -1,7 +1,7 @@
 import diagnosesData from '../../data/diagnoses';
-import { DiagnosesEntry, NonLatinDiagnosesEntry } from '../types';
+import { Diagnosis, NonLatinDiagnosesEntry } from '../types';
 
-const getDiagnoses = (): DiagnosesEntry[] => {
+const getDiagnoses = (): Diagnosis[] => {
   return diagnosesData;
 };
 
@@ -12,7 +12,13 @@ const getNonLatinDiagnoses = (): NonLatinDiagnosesEntry[] => {
   }));
 };
 
+const save = (newDiagnosis: Diagnosis) => {
+  diagnosesData.concat(newDiagnosis);
+  return newDiagnosis;
+}
+
 export default {
   getDiagnoses,
-  getNonLatinDiagnoses
+  getNonLatinDiagnoses,
+  save
 };
